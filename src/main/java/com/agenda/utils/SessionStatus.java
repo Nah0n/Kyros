@@ -1,6 +1,6 @@
 package com.agenda.utils;
 
-public enum Status {
+public enum SessionStatus {
     PLANNED,
     IN_PROGRESS,
     DONE

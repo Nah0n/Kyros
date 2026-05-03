@@ -1,6 +1,6 @@
 package com.agenda.utils;
 
-public enum Method {
+public enum SessionMethod {
     POMODORO,
     FREE,
     TIME_BLOCK
