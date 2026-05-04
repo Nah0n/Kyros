@@ -1,4 +1,69 @@
 package com.agenda.converter;
 
+import com.agenda.data.model.SessionModel;
+import com.agenda.data.model.TaskModel;
+import com.agenda.domain.entity.SessionEntity;
+import com.agenda.domain.entity.TaskEntity;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@ApplicationScoped
 public class SessionConverter {
+    @Inject
+    TaskConverter taskConverter;
+
+    @Inject
+    UserConverter userConverter;
+
+    public SessionEntity toEntity(SessionModel model)
+    {
+        if (model == null)
+            return null;
+
+        SessionEntity entity = new SessionEntity();
+
+        entity.setId(model.getId());
+        entity.setTitle(model.getTitle());
+        entity.setPlannedAt(model.getPlannedAt());
+        entity.setDuration(model.getDuration());
+        entity.setMethod(model.getMethod());
+        entity.setStatus(model.getStatus());
+        entity.setUser(userConverter.toEntity(model.getUser()));
+        List<TaskEntity> tasks = new ArrayList<>();
+        for (TaskModel task: model.getTasks())
+        {
+            tasks.add(taskConverter.toEntity(task));
+        }
+        entity.setTasks(tasks);
+
+        return entity;
+    }
+
+    public SessionModel toModel(SessionEntity entity)
+    {
+        if (entity == null)
+            return null;
+
+        SessionModel model = new SessionModel();
+
+        model.setId(entity.getId());
+        model.setTitle(entity.getTitle());
+        model.setPlannedAt(entity.getPlannedAt());
+        model.setDuration(entity.getDuration());
+        model.setMethod(entity.getMethod());
+        model.setStatus(entity.getStatus());
+        model.setUser(userConverter.toModel(entity.getUser()));
+        List<TaskModel> tasks = new ArrayList<>();
+        for (TaskEntity task: entity.getTasks())
+        {
+            tasks.add(taskConverter.toModel(task));
+        }
+        model.setTasks(tasks);
+
+        return model;
+    }
+
 }
