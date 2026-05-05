@@ -2,12 +2,12 @@ package com.agenda.converter;
 
 import com.agenda.data.model.TaskModel;
 import com.agenda.domain.entity.TaskEntity;
+import com.agenda.presentation.api.response.TaskResponse;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class TaskConverter {
-    public TaskEntity toEntity(TaskModel model)
-    {
+    public TaskEntity toEntity(TaskModel model) {
         if (model == null)
             return null;
 
@@ -18,8 +18,7 @@ public class TaskConverter {
         return entity;
     }
 
-    public TaskModel toModel(TaskEntity entity)
-    {
+    public TaskModel toModel(TaskEntity entity) {
         if (entity == null)
             return null;
 
@@ -28,5 +27,19 @@ public class TaskConverter {
         model.setTitle(entity.getTitle());
         model.setDone(entity.getDone());
         return model;
+    }
+
+    public TaskResponse toResponse(TaskEntity entity)
+    {
+        if (entity == null)
+            return null;
+
+        TaskResponse response = new TaskResponse();
+
+        response.setId(entity.getId());
+        response.setDone(entity.getDone());
+        response.setTitle(entity.getTitle());
+
+        return response;
     }
 }

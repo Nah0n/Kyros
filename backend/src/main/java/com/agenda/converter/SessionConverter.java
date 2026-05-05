@@ -4,6 +4,8 @@ import com.agenda.data.model.SessionModel;
 import com.agenda.data.model.TaskModel;
 import com.agenda.domain.entity.SessionEntity;
 import com.agenda.domain.entity.TaskEntity;
+import com.agenda.presentation.api.response.SessionResponse;
+import com.agenda.presentation.api.response.TaskResponse;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -64,6 +66,30 @@ public class SessionConverter {
         model.setTasks(tasks);
 
         return model;
+    }
+
+    public SessionResponse toResponse(SessionEntity entity)
+    {
+        if (entity == null)
+            return null;
+
+        SessionResponse response = new SessionResponse();
+
+        response.setId(entity.getId());
+        response.setTitle(entity.getTitle());
+        response.setPlannedAt(entity.getPlannedAt());
+        response.setDuration(entity.getDuration());
+        response.setMethod(entity.getMethod());
+        response.setStatus(entity.getStatus());
+        response.setUser(userConverter.toResponse(entity.getUser()));
+        List<TaskResponse> tasks = new ArrayList<>();
+        for (TaskEntity task: entity.getTasks())
+        {
+            tasks.add(taskConverter.toResponse(task));
+        }
+        response.setTasks(tasks);
+
+        return response;
     }
 
 }
