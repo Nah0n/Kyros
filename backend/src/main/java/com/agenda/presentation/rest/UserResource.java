@@ -2,6 +2,7 @@ package com.agenda.presentation.rest;
 
 import com.agenda.converter.UserConverter;
 import com.agenda.domain.entity.UserEntity;
+import com.agenda.domain.service.TokenService;
 import com.agenda.domain.service.UserService;
 import com.agenda.presentation.api.request.LoginRequest;
 import com.agenda.presentation.api.request.RegisterRequest;
@@ -24,12 +25,17 @@ public class UserResource {
     @Inject
     UserConverter userConverter;
 
+    @Inject
+    TokenService tokenService;
+
     @POST
     @Path("/register")
     public Response register(RegisterRequest request)
     {
         UserEntity entity = userService.createUser(request.getLogin(), request.getPassword());
-        return Response.status(201).entity(userConverter.toResponse(entity)).build();
+        String token = tokenService.generate(entity.getId(), entity.getLogin());
+        AuthResponse response = new AuthResponse(token, userConverter.toResponse(entity));
+        return Response.status(201).entity(response).build();
     }
 
     @POST
@@ -37,9 +43,8 @@ public class UserResource {
     public Response login(LoginRequest request)
     {
         UserEntity entity = userService.login(request.getLogin(), request.getPassword());
-        //TODO: handle token generation
-        AuthResponse response = new AuthResponse(null, userConverter.toResponse(entity));
-
+        String token = tokenService.generate(entity.getId(), entity.getLogin());
+        AuthResponse response = new AuthResponse(token, userConverter.toResponse(entity));
         return Response.ok(response).build();
     }
 }

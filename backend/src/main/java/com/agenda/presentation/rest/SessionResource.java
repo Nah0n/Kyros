@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.util.List;
 
@@ -23,17 +24,22 @@ public class SessionResource {
     @Inject
     SessionConverter sessionConverter;
 
+    @Inject
+    JsonWebToken jwt;
+
 
     @POST
     public Response create(CreateSessionRequest request) {
-        SessionEntity entity = sessionService.create(request.getTitle(), request.getPlannedAt(), request.getDuration(), request.getMethod(), 1L);//TODO userId token
+        Long userId = Long.parseLong(jwt.getSubject());
+        SessionEntity entity = sessionService.create(request.getTitle(), request.getPlannedAt(), request.getDuration(), request.getMethod(), userId);//TODO userId token
         return Response.status(201).entity(sessionConverter.toResponse(entity)).build();
     }
 
     @GET
     public Response getAll()
     {
-        List<SessionEntity> entities = sessionService.getAll(1L); //TODO userId token
+        Long userId = Long.parseLong(jwt.getSubject());
+        List<SessionEntity> entities = sessionService.getAll(userId);
         List<SessionResponse> responses = entities.stream()
                 .map(sessionConverter::toResponse)
                 .toList();
