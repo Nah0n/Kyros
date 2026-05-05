@@ -65,7 +65,7 @@ public class SessionService {
     }
 
     @Transactional
-    public SessionEntity update(Long sessionId, String title, Integer duration, SessionMethod method) {
+    public SessionEntity update(Long sessionId, String title, Integer duration, LocalDateTime plannedAt, SessionMethod method) {
         SessionModel model = sessionRepository.findById(sessionId);
         if (model == null)
             throw new RuntimeException("Session not found");
@@ -74,6 +74,9 @@ public class SessionService {
 
         if (duration != null)
             model.setDuration(duration);
+
+        if (plannedAt != null)
+            model.setPlannedAt(plannedAt);
 
         if (method != null)
             model.setMethod(method);
