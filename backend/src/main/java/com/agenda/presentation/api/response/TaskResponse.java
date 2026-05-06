@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TaskResponse {
-    private Long id;
-    private String title;
-    private Boolean done;
+  private Long id;
+  private String title;
+  private Boolean done;
 }

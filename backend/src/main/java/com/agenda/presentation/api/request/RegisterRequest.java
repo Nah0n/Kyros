@@ -11,9 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequest {
-    @NotBlank
-    private String login;
+  @NotBlank private String login;
 
-    @NotBlank
-    private String password;
+  @NotBlank private String password;
 }

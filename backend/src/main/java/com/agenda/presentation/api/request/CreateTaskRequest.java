@@ -11,6 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateTaskRequest {
-    @NotBlank
-    private String title;
+  @NotBlank private String title;
 }

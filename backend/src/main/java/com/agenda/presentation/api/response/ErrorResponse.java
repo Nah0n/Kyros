@@ -1,7 +1,6 @@
 package com.agenda.presentation.api.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,10 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
-    private String message;
+  private String message;
 
-    public ErrorResponse(String message)
-    {
-        this.message = message;
-    }
+  public ErrorResponse(String message) {
+    this.message = message;
+  }
 }

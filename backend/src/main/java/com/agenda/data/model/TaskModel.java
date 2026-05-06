@@ -10,19 +10,17 @@ import lombok.*;
 @Entity
 @Table(name = "tasks")
 public class TaskModel {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    private Long id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  private Long id;
 
-    @NotNull
-    @NotBlank
-    private String title;
+  @NotNull @NotBlank private String title;
 
-    private Boolean done;
+  private Boolean done;
 
-    @ManyToOne
-    @JoinColumn(name = "session_id")
-    private SessionModel session;
+  @ManyToOne
+  @JoinColumn(name = "session_id")
+  private SessionModel session;
 
-    // TODO: add a Link to upcoming work session here (For space learning for instance)
+  // TODO: add a Link to upcoming work session here (For space learning for instance)
 }

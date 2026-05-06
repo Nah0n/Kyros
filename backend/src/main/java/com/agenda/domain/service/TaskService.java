@@ -12,57 +12,47 @@ import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class TaskService {
-    @Inject
-    TaskRepository taskRepository;
+  @Inject TaskRepository taskRepository;
 
-    @Inject
-    TaskConverter taskConverter;
+  @Inject TaskConverter taskConverter;
 
-    @Inject
-    SessionRepository sessionRepository;
+  @Inject SessionRepository sessionRepository;
 
-    @Transactional
-    public TaskEntity create (String title, Long sessionId)
-    {
-        //TODO: handle blank title in Request
-        TaskModel model = new TaskModel();
-        model.setTitle(title);
-        model.setDone(false);
+  @Transactional
+  public TaskEntity create(String title, Long sessionId) {
+    // TODO: handle blank title in Request
+    TaskModel model = new TaskModel();
+    model.setTitle(title);
+    model.setDone(false);
 
-        SessionModel session = sessionRepository.findById(sessionId);
-        if (session == null)
-            throw new RuntimeException("Session not found");
+    SessionModel session = sessionRepository.findById(sessionId);
+    if (session == null) throw new RuntimeException("Session not found");
 
-        model.setSession(session);
-        taskRepository.persist(model);
-        return taskConverter.toEntity(model);
-    }
+    model.setSession(session);
+    taskRepository.persist(model);
+    return taskConverter.toEntity(model);
+  }
 
-    @Transactional
-    public TaskEntity update(String title, Long taskId)
-    {
-        TaskModel model = taskRepository.findById(taskId);
-        if (model == null)
-            throw new RuntimeException("Task not found");
-        model.setTitle(title);
-        taskRepository.persist(model);
-        return taskConverter.toEntity(model);
-    }
+  @Transactional
+  public TaskEntity update(String title, Long taskId) {
+    TaskModel model = taskRepository.findById(taskId);
+    if (model == null) throw new RuntimeException("Task not found");
+    model.setTitle(title);
+    taskRepository.persist(model);
+    return taskConverter.toEntity(model);
+  }
 
-    @Transactional
-    public void delete(Long taskId)
-    {
-        taskRepository.deleteById(taskId);
-    }
+  @Transactional
+  public void delete(Long taskId) {
+    taskRepository.deleteById(taskId);
+  }
 
-    @Transactional
-    public TaskEntity toggleDone(Long taskId)
-    {
-        TaskModel model = taskRepository.findById(taskId);
-        if (model == null)
-            throw new RuntimeException("Task not found");
-        model.setDone(!model.getDone());
-        taskRepository.persist(model);
-        return taskConverter.toEntity(model);
-    }
+  @Transactional
+  public TaskEntity toggleDone(Long taskId) {
+    TaskModel model = taskRepository.findById(taskId);
+    if (model == null) throw new RuntimeException("Task not found");
+    model.setDone(!model.getDone());
+    taskRepository.persist(model);
+    return taskConverter.toEntity(model);
+  }
 }

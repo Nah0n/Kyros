@@ -6,9 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TaskEntity {
-    private Long id;
-    private String title;
-    private Boolean done;
-    private SessionEntity session;
-    //TODO: Update when TaskModel updated
+  private Long id;
+  private String title;
+  private Boolean done;
+  private SessionEntity session;
+  // TODO: Update when TaskModel updated
 }

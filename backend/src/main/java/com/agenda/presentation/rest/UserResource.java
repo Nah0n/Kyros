@@ -20,31 +20,26 @@ import jakarta.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserResource {
 
-    @Inject
-    UserService userService;
-    @Inject
-    UserConverter userConverter;
+  @Inject UserService userService;
+  @Inject UserConverter userConverter;
 
-    @Inject
-    TokenService tokenService;
+  @Inject TokenService tokenService;
 
-    @POST
-    @Path("/register")
-    public Response register(RegisterRequest request)
-    {
-        UserEntity entity = userService.createUser(request.getLogin(), request.getPassword());
-        String token = tokenService.generate(entity.getId(), entity.getLogin());
-        AuthResponse response = new AuthResponse(token, userConverter.toResponse(entity));
-        return Response.status(201).entity(response).build();
-    }
+  @POST
+  @Path("/register")
+  public Response register(RegisterRequest request) {
+    UserEntity entity = userService.createUser(request.getLogin(), request.getPassword());
+    String token = tokenService.generate(entity.getId(), entity.getLogin());
+    AuthResponse response = new AuthResponse(token, userConverter.toResponse(entity));
+    return Response.status(201).entity(response).build();
+  }
 
-    @POST
-    @Path("/login")
-    public Response login(LoginRequest request)
-    {
-        UserEntity entity = userService.login(request.getLogin(), request.getPassword());
-        String token = tokenService.generate(entity.getId(), entity.getLogin());
-        AuthResponse response = new AuthResponse(token, userConverter.toResponse(entity));
-        return Response.ok(response).build();
-    }
+  @POST
+  @Path("/login")
+  public Response login(LoginRequest request) {
+    UserEntity entity = userService.login(request.getLogin(), request.getPassword());
+    String token = tokenService.generate(entity.getId(), entity.getLogin());
+    AuthResponse response = new AuthResponse(token, userConverter.toResponse(entity));
+    return Response.ok(response).build();
+  }
 }

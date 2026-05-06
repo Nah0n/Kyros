@@ -11,80 +11,79 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
 import java.util.List;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 @Path("/sessions")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @RolesAllowed("**")
 public class SessionResource {
-    @Inject
-    SessionService sessionService;
+  @Inject SessionService sessionService;
 
-    @Inject
-    SessionConverter sessionConverter;
+  @Inject SessionConverter sessionConverter;
 
-    @Inject
-    JsonWebToken jwt;
+  @Inject JsonWebToken jwt;
 
+  @POST
+  public Response create(CreateSessionRequest request) {
+    Long userId = Long.parseLong(jwt.getSubject());
+    SessionEntity entity =
+        sessionService.create(
+            request.getTitle(),
+            request.getPlannedAt(),
+            request.getDuration(),
+            request.getMethod(),
+            userId); // TODO userId token
+    return Response.status(201).entity(sessionConverter.toResponse(entity)).build();
+  }
 
-    @POST
-    public Response create(CreateSessionRequest request) {
-        Long userId = Long.parseLong(jwt.getSubject());
-        SessionEntity entity = sessionService.create(request.getTitle(), request.getPlannedAt(), request.getDuration(), request.getMethod(), userId);//TODO userId token
-        return Response.status(201).entity(sessionConverter.toResponse(entity)).build();
-    }
+  @GET
+  public Response getAll() {
+    Long userId = Long.parseLong(jwt.getSubject());
+    List<SessionEntity> entities = sessionService.getAll(userId);
+    List<SessionResponse> responses = entities.stream().map(sessionConverter::toResponse).toList();
+    return Response.ok(responses).build();
+  }
 
-    @GET
-    public Response getAll()
-    {
-        Long userId = Long.parseLong(jwt.getSubject());
-        List<SessionEntity> entities = sessionService.getAll(userId);
-        List<SessionResponse> responses = entities.stream()
-                .map(sessionConverter::toResponse)
-                .toList();
-        return Response.ok(responses).build();
-    }
+  @GET
+  @Path("/{id}")
+  public Response getById(@PathParam("id") Long id) {
+    SessionEntity entity = sessionService.getById(id);
+    return Response.ok(sessionConverter.toResponse(entity)).build();
+  }
 
-    @GET
-    @Path("/{id}")
-    public Response getById(@PathParam("id") Long id)
-    {
-        SessionEntity entity = sessionService.getById(id);
-        return Response.ok(sessionConverter.toResponse(entity)).build();
-    }
+  @PUT
+  @Path("/{id}")
+  public Response update(@PathParam("id") Long id, UpdateSessionRequest request) {
+    SessionEntity entity =
+        sessionService.update(
+            id,
+            request.getTitle(),
+            request.getDuration(),
+            request.getPlannedAt(),
+            request.getMethod());
+    return Response.ok(sessionConverter.toResponse(entity)).build();
+  }
 
-    @PUT
-    @Path("/{id}")
-    public Response update(@PathParam("id") Long id, UpdateSessionRequest request)
-    {
-        SessionEntity entity = sessionService.update(id, request.getTitle(), request.getDuration(), request.getPlannedAt(), request.getMethod());
-        return Response.ok(sessionConverter.toResponse(entity)).build();
-    }
+  @DELETE
+  @Path("/{id}")
+  public Response delete(@PathParam("id") Long id) {
+    sessionService.delete(id);
+    return Response.noContent().build();
+  }
 
-    @DELETE
-    @Path("/{id}")
-    public Response delete(@PathParam("id") Long id)
-    {
-        sessionService.delete(id);
-        return Response.noContent().build();
-    }
+  @PUT
+  @Path("/{id}/start")
+  public Response start(@PathParam("id") Long id) {
+    SessionEntity entity = sessionService.start(id);
+    return Response.ok(sessionConverter.toResponse(entity)).build();
+  }
 
-    @PUT
-    @Path("/{id}/start")
-    public Response start(@PathParam("id")Long id)
-    {
-        SessionEntity entity = sessionService.start(id);
-        return Response.ok(sessionConverter.toResponse(entity)).build();
-    }
-
-    @PUT
-    @Path("/{id}/finish")
-    public Response finish(@PathParam("id")Long id)
-    {
-        SessionEntity entity = sessionService.finish(id);
-        return Response.ok(sessionConverter.toResponse(entity)).build();
-    }
+  @PUT
+  @Path("/{id}/finish")
+  public Response finish(@PathParam("id") Long id) {
+    SessionEntity entity = sessionService.finish(id);
+    return Response.ok(sessionConverter.toResponse(entity)).build();
+  }
 }
