@@ -20,8 +20,7 @@ public class SessionConverter {
     @Inject
     UserConverter userConverter;
 
-    public SessionEntity toEntity(SessionModel model)
-    {
+    public SessionEntity toEntity(SessionModel model) {
         if (model == null)
             return null;
 
@@ -34,18 +33,18 @@ public class SessionConverter {
         entity.setMethod(model.getMethod());
         entity.setStatus(model.getStatus());
         entity.setUser(userConverter.toEntity(model.getUser()));
+
         List<TaskEntity> tasks = new ArrayList<>();
-        for (TaskModel task: model.getTasks())
-        {
-            tasks.add(taskConverter.toEntity(task));
-        }
+        if (model.getTasks() != null)
+            for (TaskModel task : model.getTasks()) {
+                tasks.add(taskConverter.toEntity(task));
+            }
         entity.setTasks(tasks);
 
         return entity;
     }
 
-    public SessionModel toModel(SessionEntity entity)
-    {
+    public SessionModel toModel(SessionEntity entity) {
         if (entity == null)
             return null;
 
@@ -59,17 +58,16 @@ public class SessionConverter {
         model.setStatus(entity.getStatus());
         model.setUser(userConverter.toModel(entity.getUser()));
         List<TaskModel> tasks = new ArrayList<>();
-        for (TaskEntity task: entity.getTasks())
-        {
-            tasks.add(taskConverter.toModel(task));
-        }
+        if (entity.getTasks() != null)
+            for (TaskEntity task : entity.getTasks()) {
+                tasks.add(taskConverter.toModel(task));
+            }
         model.setTasks(tasks);
 
         return model;
     }
 
-    public SessionResponse toResponse(SessionEntity entity)
-    {
+    public SessionResponse toResponse(SessionEntity entity) {
         if (entity == null)
             return null;
 
@@ -83,10 +81,10 @@ public class SessionConverter {
         response.setStatus(entity.getStatus());
         response.setUser(userConverter.toResponse(entity.getUser()));
         List<TaskResponse> tasks = new ArrayList<>();
-        for (TaskEntity task: entity.getTasks())
-        {
-            tasks.add(taskConverter.toResponse(task));
-        }
+        if (entity.getTasks() != null)
+            for (TaskEntity task : entity.getTasks()) {
+                tasks.add(taskConverter.toResponse(task));
+            }
         response.setTasks(tasks);
 
         return response;
