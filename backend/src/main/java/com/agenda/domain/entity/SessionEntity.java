@@ -2,7 +2,6 @@ package com.agenda.domain.entity;
 
 import com.agenda.utils.SessionMethod;
 import com.agenda.utils.SessionStatus;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
