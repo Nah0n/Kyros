@@ -6,6 +6,7 @@ import com.agenda.domain.service.SessionService;
 import com.agenda.presentation.api.request.CreateSessionRequest;
 import com.agenda.presentation.api.request.UpdateSessionRequest;
 import com.agenda.presentation.api.response.SessionResponse;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -17,6 +18,7 @@ import java.util.List;
 @Path("/sessions")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@RolesAllowed("**")
 public class SessionResource {
     @Inject
     SessionService sessionService;

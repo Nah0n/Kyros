@@ -5,6 +5,7 @@ import com.agenda.domain.entity.TaskEntity;
 import com.agenda.domain.service.TaskService;
 import com.agenda.presentation.api.request.CreateTaskRequest;
 import com.agenda.presentation.api.request.UpdateTaskRequest;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -13,6 +14,7 @@ import jakarta.ws.rs.core.Response;
 @Path("/sessions/{sessionId}/tasks")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@RolesAllowed("**")
 public class TaskResource {
     @Inject
     TaskService taskService;
