@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOSSIER N°67 — Enquête en cours</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Permanent+Marker&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cork:#c19a5b;
+    --cork-dark:#9c7a41;
+    --cork-shadow:#6e5227;
+    --paper:#f1e7cd;
+    --paper2:#fbf6e6;
+    --ink:#2a2115;
+    --ink-soft:#4a3d29;
+    --red:#a3271e;
+    --red-dark:#7c1c15;
+    --blue:#2d4f6b;
+    --tape:rgba(255,250,225,0.6);
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05), transparent 40%),
+      radial-gradient(circle at 80% 60%, rgba(0,0,0,0.08), transparent 45%),
+      repeating-linear-gradient(45deg, var(--cork) 0px, var(--cork) 2px, var(--cork-dark) 2px, var(--cork-dark) 4px);
+    background-color:var(--cork);
+    font-family:'Special Elite', monospace;
+    color:var(--ink);
+    min-height:100vh;
+    padding:40px 20px 100px;
+  }
+
+  /* subtle cork speckle texture */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background-image:
+      radial-gradient(rgba(0,0,0,0.15) 1px, transparent 1px),
+      radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size:7px 7px, 5px 5px;
+    background-position:0 0, 3px 3px;
+    opacity:0.5;
+    z-index:0;
+  }
+
+  .wrap{position:relative; max-width:1100px; margin:0 auto; z-index:1;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    text-align:center;
+    margin-bottom:70px;
+    position:relative;
+  }
+
+  .case-tag{
+    display:inline-block;
+    background:var(--paper2);
+    padding:6px 18px;
+    font-family:'Special Elite', monospace;
+    letter-spacing:3px;
+    font-size:0.75rem;
+    color:var(--red-dark);
+    border:1px solid rgba(0,0,0,0.25);
+    box-shadow:2px 2px 6px rgba(0,0,0,0.35);
+    transform:rotate(-2deg);
+  }
+
+  h1{
+    font-family:'Permanent Marker', cursive;
+    font-size:clamp(3rem, 9vw, 6.5rem);
+    color:var(--paper2);
+    margin:14px 0 6px;
+    text-shadow:3px 3px 0 rgba(0,0,0,0.35);
+    transform:rotate(-1deg);
+    line-height:0.9;
+  }
+
+  .subhead{
+    font-family:'Caveat', cursive;
+    font-size:1.6rem;
+    color:var(--paper2);
+    opacity:0.95;
+    max-width:520px;
+    margin:0 auto;
+    transform:rotate(0.5deg);
+  }
+
+  .stamp{
+    position:absolute;
+    top:-18px;
+    right:6%;
+    font-family:'Permanent Marker', cursive;
+    font-size:1.1rem;
+    color:var(--red);
+    border:4px solid var(--red);
+    border-radius:8px;
+    padding:8px 14px;
+    transform:rotate(12deg);
+    opacity:0.85;
+    mix-blend-mode:multiply;
+  }
+
+  /* ---------- STRING BOARD ---------- */
+  .string-layer{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* ---------- GRID ---------- */
+  .board{
+    position:relative;
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+    gap:36px 28px;
+    z-index:1;
+  }
+
+  .card{
+    position:relative;
+    background:var(--paper);
+    background-image:
+      linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
+    background-size:100% 1.6em;
+    padding:26px 20px 20px;
+    box-shadow:3px 5px 14px rgba(0,0,0,0.4);
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+    min-height:210px;
+  }
+
+  .card:nth-child(3n+1){transform:rotate(-2.2deg);}
+  .card:nth-child(3n+2){transform:rotate(1.6deg);}
+  .card:nth-child(3n){transform:rotate(-1deg);}
+  .card:nth-child(4n){transform:rotate(2.4deg);}
+
+  .card:hover{
+    transform:scale(1.045) rotate(0deg);
+    box-shadow:6px 10px 24px rgba(0,0,0,0.5);
+    z-index:5;
+  }
+
+  /* pin */
+  .card::before{
+    content:"";
+    position:absolute;
+    top:-11px;
+    left:50%;
+    transform:translateX(-50%);
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #ff8b7a, var(--red) 60%, var(--red-dark) 100%);
+    box-shadow:0 3px 4px rgba(0,0,0,0.5);
+  }
+
+  .card:nth-child(3n)::before{
+    background:radial-gradient(circle at 35% 30%, #7fb2e0, var(--blue) 60%, #1c3549 100%);
+  }
+
+  .evidence-tag{
+    font-size:0.7rem;
+    letter-spacing:2px;
+    color:var(--red-dark);
+    font-weight:bold;
+    margin-bottom:8px;
+    display:block;
+  }
+
+  .card h3{
+    font-family:'Permanent Marker', cursive;
+    font-size:1.5rem;
+    color:var(--ink);
+    margin:0 0 10px;
+    line-height:1.15;
+  }
+
+  .card p{
+    font-size:0.92rem;
+    line-height:1.5;
+    color:var(--ink-soft);
+    margin:0;
+  }
+
+  .card .handnote{
+    font-family:'Caveat', cursive;
+    font-size:1.25rem;
+    color:var(--red-dark);
+    margin-top:10px;
+    transform:rotate(-1deg);
+  }
+
+  /* tape strip variant */
+  .tape{
+    position:absolute;
+    width:70px;
+    height:24px;
+    background:var(--tape);
+    box-shadow:0 1px 3px rgba(0,0,0,0.25);
+    top:-14px;
+    left:50%;
+    transform:translateX(-50%) rotate(-4deg);
+    opacity:0.85;
+  }
+
+  .card.taped::before{display:none;}
+
+  /* polaroid-style card for meme entry */
+  .card.polaroid{
+    background:var(--paper2);
+    padding-bottom:36px;
+  }
+  .polaroid .frame{
+    background:repeating-linear-gradient(135deg, #d7cba3, #d7cba3 6px, #cabb8f 6px, #cabb8f 12px);
+    height:110px;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .polaroid .gesture{
+    font-family:'Permanent Marker', cursive;
+    font-size:2.2rem;
+    color:var(--ink);
+    transform:rotate(-6deg);
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    text-align:center;
+    margin-top:90px;
+    position:relative;
+  }
+
+  .seal{
+    display:inline-block;
+    font-family:'Permanent Marker', cursive;
+    font-size:1.8rem;
+    color:var(--red);
+    border:5px double var(--red);
+    padding:14px 30px;
+    transform:rotate(-4deg);
+    opacity:0.9;
+    background:rgba(255,255,255,0.04);
+  }
+
+  .footnote{
+    font-family:'Caveat', cursive;
+    color:var(--paper2);
+    font-size:1.2rem;
+    margin-top:20px;
+    opacity:0.9;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .card{transition:none;}
+  }
+
+  @media (max-width:600px){
+    .stamp{position:static; display:inline-block; margin-top:14px; transform:rotate(-4deg);}
+    header{margin-bottom:50px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="case-tag">DOSSIER N° 67 — ACCÈS RESTREINT</span>
+    <h1>L'AFFAIRE 67</h1>
+    <p class="subhead">Un nombre premier ordinaire, aperçu partout, expliqué nulle part. Ce tableau rassemble les pièces à conviction.</p>
+    <div class="stamp">EN COURS</div>
+  </header>
+
+  <div class="board">
+
+    <div class="card">
+      <span class="evidence-tag">PIÈCE N°01 — ARITHMÉTIQUE</span>
+      <h3>6 + 7 = 13</h3>
+      <p>La somme de ses deux chiffres retombe sur le nombre le plus superstitieusement redouté d'Occident. Coïncidence ? Le tableau penche pour « probablement ».</p>
+    </div>
+
+    <div class="card">
+      <span class="evidence-tag">PIÈCE N°02 — ARITHMÉTIQUE</span>
+      <h3>6 × 7 = 42</h3>
+      <p>Le produit de ses chiffres donne un nombre tristement célèbre pour être, selon la culture populaire, la réponse à une question qu'on ne connaît pas encore.</p>
+      <p class="handnote">à recouper !</p>
+    </div>
+
+    <div class="card taped">
+      <span class="tape"></span>
+      <span class="evidence-tag">PIÈCE N°03 — THÉORIE DES NOMBRES</span>
+      <h3>67 est premier</h3>
+      <p>19ᵉ nombre premier de la suite, indivisible par tout sauf 1 et lui-même. Un solitaire, un cavale-seul, un suspect sans complice.</p>
+    </div>
+
+    <div class="card">
+      <span class="evidence-tag">PIÈCE N°04 — GÉOMÉTRIE</span>
+      <h3>67² = 4489</h3>
+      <p>Son carré. Rien de suspect en apparence, mais tout dossier sérieux vérifie les carrés.</p>
+    </div>
+
+    <div class="card">
+      <span class="evidence-tag">PIÈCE N°05 — BINAIRE</span>
+      <h3>1000011</h3>
+      <p>Sa signature en base 2. Symétrique aux extrémités, vide au milieu — comme un alibi trop bien rangé.</p>
+    </div>
+
+    <div class="card">
+      <span class="evidence-tag">PIÈCE N°06 — ANTIQUITÉ</span>
+      <h3>LXVII</h3>
+      <p>Son identité en chiffres romains. Cinq lettres pour un seul nombre : il aime visiblement se déguiser.</p>
+    </div>
+
+    <div class="card">
+      <span class="evidence-tag">PIÈCE N°07 — MIROIR</span>
+      <h3>67 ↔ 76</h3>
+      <p>Retourné, il devient 76. Écart de 9 très exactement — le même écart que pour n'importe quelle paire de nombres à deux chiffres inversés. Un miroir sans mystère, mais un miroir quand même.</p>
+    </div>
+
+    <div class="card">
+      <span class="evidence-tag">PIÈCE N°08 — CHIMIE</span>
+      <h3>Élément n°67</h3>
+      <p>Sur le tableau périodique, la case 67 revient à l'holmium (Ho), un métal des terres rares. Rare, discret, difficile à repérer — un profil qui lui va bien.</p>
+    </div>
+
+    <div class="card polaroid">
+      <span class="evidence-tag">PIÈCE N°09 — TERRAIN</span>
+      <div class="frame"><span class="gesture">6 ~ 7</span></div>
+      <h3>Le geste des mains</h3>
+      <p>Depuis 2025, des adolescents crient « six-sept » en balançant les mains comme une balance, sans raison identifiable. Le tableau ne l'explique pas. Il se contente de le documenter.</p>
+    </div>
+
+    <div class="card">
+      <span class="evidence-tag">PIÈCE N°10 — CALENDRIER</span>
+      <h3>67 jours</h3>
+      <p>Soit un peu plus de neuf semaines et demie. Assez long pour tout oublier, assez court pour ne rien avoir résolu.</p>
+    </div>
+
+    <div class="card">
+      <span class="evidence-tag">PIÈCE N°11 — HISTOIRE</span>
+      <h3>1967</h3>
+      <p>L'année portant ce nombre en son sein est surtout retenue comme celle de l'« été de l'amour ». Le dossier note l'ironie d'un chiffre si froidement mathématique associé à un été si chaleureux.</p>
+    </div>
+
+    <div class="card taped">
+      <span class="tape"></span>
+      <span class="evidence-tag">PIÈCE N°12 — ROUTES</span>
+      <h3>Route 67</h3>
+      <p>Plusieurs routes numérotées 67 existent de par le monde, silencieuses, traversant des paysages qui n'ont rien demandé.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="seal">CLASSÉ : NON RÉSOLU</div>
+    <p class="footnote">Le nombre 67 continuera d'apparaître. Le tableau, lui, continuera de recoller les fils.</p>
+  </footer>
+
+</div>
+</body>
+</html>
